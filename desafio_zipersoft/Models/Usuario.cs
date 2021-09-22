@@ -23,6 +23,10 @@ namespace desafio_zipersoft.Models
         [Display(Name="RG")]
         [Column("RG")]
         public string RG { get; set; } 
+        
+        [Display(Name="IE")]
+        [Column("IE")]
+        public string IE { get; set; } 
 
         [Display(Name="CPF")]
         [Column("CPF")]
