@@ -1,0 +1,78 @@
+﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+<script type="text/javascript">
+    //máscara para os inputs
+    $("#telefone").mask("(00) 0000-0000");
+    $("#celular").mask("(00) 00000-0000");
+    $("#rg").mask("00.000.000-0");
+    $("#cpf").mask("000.000.000-00");
+    $("#cnpj").mask("00.000.000/0000-00");
+    $("#cep").mask("00000-000");
+
+    // Registra o evento blur do campo "cep", ou seja, a pesquisa será feita
+    // quando o usuário sair do campo "cep"
+    $("#cep").blur(function () {
+        // Remove tudo o que não é número para fazer a pesquisa
+        var cep = this.value.replace(/[^0-9]/, "");
+
+        // Validação do CEP; caso o CEP não possua 8 números, então cancela
+        // a consulta
+        if (cep.length != 8) {
+            return false;
+        }
+
+        // A url de pesquisa consiste no endereço do webservice + o cep que
+        // o usuário informou + o tipo de retorno desejado (entre "json",
+        // "jsonp", "xml", "piped" ou "querty")
+        var url = "https://viacep.com.br/ws/" + cep + "/json/";
+
+        // Faz a pesquisa do CEP, tratando o retorno com try/catch para que
+        // caso ocorra algum erro (o cep pode não existir, por exemplo) a
+        // usabilidade não seja afetada, assim o usuário pode continuar//
+        // preenchendo os campos normalmente
+        $.getJSON(url, function (dadosRetorno) {
+            try {
+                // Preenche os campos de acordo com o retorno da pesquisa
+                $("#endereco").val(dadosRetorno.logradouro);
+                $("#bairro").val(dadosRetorno.bairro);
+                $("#cidade").val(dadosRetorno.localidade);
+                
+            } catch (ex) { }
+        });
+    });
+
+    let nome = document.getElementById('nome')
+    let cpf = document.getElementById('cpf')
+    let rg = document.getElementById('rg')
+    let cnpj = document.getElementById('cnpj')
+    let cep = document.getElementById('cep')
+    let email = document.getElementById('email')
+    let celular = document.getElementById('celular')
+    let image = document.getElementById('image')
+
+    function submit_all() {
+
+        if (nome.value.length < 2) {
+            alert("O campo nome não pode estar vazio!")
+        } else if (rg.value.length < 12) {
+            alert("O campo RG está inválido!")
+        } else if (cep.value.length < 8) {
+            alert("O campo CEP está inválido!")
+        }else if (cidade.value.length == 0) {
+            alert("O campo cidade está inválido!")
+        }else if (bairro.value.length == 0) {
+            alert("O campo bairro está inválido!")
+        }else if (endereco.value.length == 0) {
+            alert("O campo endereço está inválido!")
+        }else if (numero.value.length == 0) {
+            alert("O campo numero está inválido!")
+        } else if (email.value.length < 10) {
+            alert("O campo email está inválido!")
+        } else if (celular.value.length < 14) {
+            alert("O campo celular está inválido!")
+        }
+    }
+</script>
